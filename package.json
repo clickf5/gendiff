@@ -7,7 +7,9 @@
     "diff"
   ],
   "main": "dist/index.js",
-  "bin": {},
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
   "files": [
     "dist"
   ],
@@ -24,6 +26,7 @@
     "@babel/node": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "@hexlet/pairs": "^1.0.10",
+    "commander": "^4.0.1",
     "readline-sync": "^1.4.10"
   },
   "devDependencies": {
