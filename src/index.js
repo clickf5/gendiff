@@ -1,6 +1,8 @@
 import program from 'commander';
 
-const cli = () => {
+const gendiff = () => 1;
+
+export const cli = () => {
   program.version('0.1.0')
     .description('Compares two configuration files and shows a difference.')
     .option('-f, --format [type]', 'Output format')
@@ -12,4 +14,4 @@ const cli = () => {
   program.parse(process.argv);
 };
 
-export default cli;
+export default gendiff;
