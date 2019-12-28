@@ -1,6 +1,9 @@
 import program from 'commander';
+import path from 'path';
 
-export const getAbsolutePathToFile = (filePath) => filePath;
+export const getAbsolutePathToFile = (filePath) => (
+  (path.isAbsolute(filePath) ? filePath : path.resolve(filePath))
+);
 
 const gendiff = () => 1;
 
