@@ -1,11 +1,16 @@
 import program from 'commander';
 import path from 'path';
+import fs from 'fs';
 
-export const getAbsolutePathToFile = (filePath) => (
-  (path.isAbsolute(filePath) ? filePath : path.resolve(filePath))
-);
+const gendiff = (firstConfig, secondConfig) => {
+  const pathToFirstConfig = path.resolve(firstConfig);
+  const pathToSecondConfig = path.resolve(secondConfig);
 
-const gendiff = () => 1;
+  const firstJSON = JSON.parse(fs.readFileSync(pathToFirstConfig));
+  const secondJSON = JSON.parse(fs.readFileSync(pathToSecondConfig));
+
+  return `${pathToFirstConfig} -- ${pathToSecondConfig}`;
+};
 
 export const cli = () => {
   program.version('0.1.0')
@@ -13,7 +18,7 @@ export const cli = () => {
     .option('-f, --format [type]', 'Output format')
     .arguments('<firstConfig> <secondConfig>')
     .action((firstConfig, secondConfig) => {
-      console.log(`${firstConfig} -- ${secondConfig}`);
+      gendiff(firstConfig, secondConfig);
     });
 
   program.parse(process.argv);
