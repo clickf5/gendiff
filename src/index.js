@@ -1,5 +1,7 @@
 import program from 'commander';
 
+export const getAbsolutePathToFile = (filePath) => filePath;
+
 const gendiff = () => 1;
 
 export const cli = () => {
