@@ -11,16 +11,16 @@ const gendiff = (firstConfig, secondConfig) => {
   const firstJSON = getJSONFromFile(firstConfig);
   const secondJSON = getJSONFromFile(secondConfig);
 
-  const noChange = Object.keys(firstJSON)
+  const noChanged = Object.keys(firstJSON)
     .filter((key) => _.has(secondJSON, key) && firstJSON[key] === secondJSON[key])
     .map((key) => `   ${key}: ${firstJSON[key]}\n`);
 
-  const filteredByHas = (firstData, secondData) => Object.keys(firstData)
+  const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
     .filter((key) => !_.has(secondData, key));
 
-  const added = filteredByHas(secondJSON, firstJSON).map((key) => ` + ${key}: ${secondJSON[key]}\n`);
+  const added = getFilteredByNoHas(secondJSON, firstJSON).map((key) => ` + ${key}: ${secondJSON[key]}\n`);
 
-  const deleted = filteredByHas(firstJSON, secondJSON).map((key) => ` - ${key}: ${firstJSON[key]}\n`);
+  const deleted = getFilteredByNoHas(firstJSON, secondJSON).map((key) => ` - ${key}: ${firstJSON[key]}\n`);
 
   const changed = Object.keys(firstJSON)
     .reduce((acc, key) => {
@@ -29,7 +29,7 @@ const gendiff = (firstConfig, secondConfig) => {
     }, []);
 
   const result = [
-    ...noChange,
+    ...noChanged,
     ...added,
     ...deleted,
     ...changed,
