@@ -15,12 +15,12 @@ const gendiff = (firstConfig, secondConfig) => {
     .filter((key) => _.has(secondJSON, key) && firstJSON[key] === secondJSON[key])
     .map((key) => `   ${key}: ${firstJSON[key]}\n`);
 
-  const filteredBy = (firstData, secondData) => Object.keys(secondData)
-    .filter((key) => !_.has(firstData, key));
+  const filteredByHas = (firstData, secondData) => Object.keys(firstData)
+    .filter((key) => !_.has(secondData, key));
 
-  const added = filteredBy(secondJSON, firstJSON).map((key) => ` + ${key}: ${secondJSON[key]}\n`);
+  const added = filteredByHas(secondJSON, firstJSON).map((key) => ` + ${key}: ${secondJSON[key]}\n`);
 
-  const deleted = filteredBy(firstJSON, secondJSON).map((key) => ` - ${key}: ${firstJSON[key]}\n`);
+  const deleted = filteredByHas(firstJSON, secondJSON).map((key) => ` - ${key}: ${firstJSON[key]}\n`);
 
   const changed = Object.keys(firstJSON)
     .reduce((acc, key) => {
