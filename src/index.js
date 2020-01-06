@@ -1,15 +1,41 @@
 import program from 'commander';
 import path from 'path';
 import fs from 'fs';
+import _ from 'lodash';
+
+const getJSONFromFile = (pathToFile) => JSON.parse(
+  fs.readFileSync(path.resolve(pathToFile)),
+);
 
 const gendiff = (firstConfig, secondConfig) => {
-  const pathToFirstConfig = path.resolve(firstConfig);
-  const pathToSecondConfig = path.resolve(secondConfig);
+  const firstJSON = getJSONFromFile(firstConfig);
+  const secondJSON = getJSONFromFile(secondConfig);
 
-  const firstJSON = JSON.parse(fs.readFileSync(pathToFirstConfig));
-  const secondJSON = JSON.parse(fs.readFileSync(pathToSecondConfig));
+  const noChange = Object.keys(firstJSON)
+    .filter((key) => _.has(secondJSON, key) && firstJSON[key] === secondJSON[key])
+    .map((key) => `   ${key}: ${firstJSON[key]}\n`);
 
-  return `${pathToFirstConfig} -- ${pathToSecondConfig}`;
+  const added = Object.keys(secondJSON).filter((key) => !_.has(firstJSON, key)).map((key) => ` + ${key}: ${secondJSON[key]}\n`);
+
+  const deleted = Object.keys(firstJSON).filter((key) => !_.has(secondJSON, key)).map((key) => ` - ${key}: ${firstJSON[key]}\n`);
+
+  const changed = Object.keys(firstJSON)
+    .reduce((acc, key) => {
+      if (_.has(secondJSON, key) && firstJSON[key] !== secondJSON[key]) acc.push(` + ${key}: ${secondJSON[key]}\n`, ` - ${key}: ${firstJSON[key]}\n`);
+      return acc;
+    }, []);
+
+  const result = [
+    ...noChange,
+    ...added,
+    ...deleted,
+    ...changed,
+  ];
+
+  result.unshift('{\n');
+  result.push('}');
+
+  return result.reduce((acc, current) => (`${acc}${current}`), '');
 };
 
 export const cli = () => {
@@ -18,7 +44,7 @@ export const cli = () => {
     .option('-f, --format [type]', 'Output format')
     .arguments('<firstConfig> <secondConfig>')
     .action((firstConfig, secondConfig) => {
-      gendiff(firstConfig, secondConfig);
+      console.log(gendiff(firstConfig, secondConfig));
     });
 
   program.parse(process.argv);
