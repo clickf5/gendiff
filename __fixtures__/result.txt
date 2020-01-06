@@ -1,0 +1,7 @@
+{
+   name: Eugene
+ + sex: male
+ - city: Tula
+ + age: 15
+ - age: 10
+}
