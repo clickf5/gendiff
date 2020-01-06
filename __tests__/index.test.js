@@ -1,17 +1,12 @@
 import path from 'path';
+import fs from 'fs';
 import gendiff from '../src';
 
 test('gendiff', () => {
-  const beforePath = path.resolve('__tests__/tmp/before.json');
-  const afterPath = path.resolve('__tests__/tmp/after.json');
+  const beforePath = path.resolve(`${__dirname}/../__fixtures__/before.json`);
+  const afterPath = path.resolve(`${__dirname}/../__fixtures__/after.json`);
 
-  const result = '{\n'
-    + '   name: Eugene\n'
-    + ' + sex: male\n'
-    + ' - city: Tula\n'
-    + ' + age: 15\n'
-    + ' - age: 10\n'
-    + '}';
+  const result = fs.readFileSync(`${__dirname}/../__fixtures__/result.txt`, 'utf8').trim();
 
   expect(gendiff(beforePath, afterPath)).toEqual(result);
 });
