@@ -1,15 +1,12 @@
 import program from 'commander';
-import path from 'path';
-import fs from 'fs';
 import _ from 'lodash';
+import getParser from './parsers';
 
-const getJSONFromFile = (pathToFile) => JSON.parse(
-  fs.readFileSync(path.resolve(pathToFile)),
-);
+const parser = getParser();
 
 const gendiff = (firstConfig, secondConfig) => {
-  const firstJSON = getJSONFromFile(firstConfig);
-  const secondJSON = getJSONFromFile(secondConfig);
+  const firstJSON = parser(firstConfig);
+  const secondJSON = parser(secondConfig);
 
   const noChanged = Object.keys(firstJSON)
     .filter((key) => _.has(secondJSON, key) && firstJSON[key] === secondJSON[key])
