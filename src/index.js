@@ -5,23 +5,23 @@ import getParser from './parsers';
 const parser = getParser();
 
 const gendiff = (beforeConf, afterConf) => {
-  const firstJSON = parser(beforeConf);
-  const secondJSON = parser(afterConf);
+  const beforeJSON = parser(beforeConf);
+  const afterJSON = parser(afterConf);
 
-  const noChanged = Object.keys(firstJSON)
-    .filter((key) => _.has(secondJSON, key) && firstJSON[key] === secondJSON[key])
-    .map((key) => `   ${key}: ${firstJSON[key]}\n`);
+  const noChanged = Object.keys(beforeJSON)
+    .filter((key) => _.has(afterJSON, key) && beforeJSON[key] === afterJSON[key])
+    .map((key) => `   ${key}: ${beforeJSON[key]}\n`);
 
   const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
     .filter((key) => !_.has(secondData, key));
 
-  const added = getFilteredByNoHas(secondJSON, firstJSON).map((key) => ` + ${key}: ${secondJSON[key]}\n`);
+  const added = getFilteredByNoHas(afterJSON, beforeJSON).map((key) => ` + ${key}: ${afterJSON[key]}\n`);
 
-  const deleted = getFilteredByNoHas(firstJSON, secondJSON).map((key) => ` - ${key}: ${firstJSON[key]}\n`);
+  const deleted = getFilteredByNoHas(beforeJSON, afterJSON).map((key) => ` - ${key}: ${beforeJSON[key]}\n`);
 
-  const changed = Object.keys(firstJSON)
+  const changed = Object.keys(beforeJSON)
     .reduce((acc, key) => {
-      if (_.has(secondJSON, key) && firstJSON[key] !== secondJSON[key]) acc.push(` + ${key}: ${secondJSON[key]}\n`, ` - ${key}: ${firstJSON[key]}\n`);
+      if (_.has(afterJSON, key) && beforeJSON[key] !== afterJSON[key]) acc.push(` + ${key}: ${afterJSON[key]}\n`, ` - ${key}: ${beforeJSON[key]}\n`);
       return acc;
     }, []);
 
