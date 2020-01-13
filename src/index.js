@@ -1,6 +1,7 @@
 import program from 'commander';
 import _ from 'lodash';
 import getParser from './parsers';
+import { version } from '../package.json';
 
 const parser = getParser();
 
@@ -41,7 +42,7 @@ const gendiff = (beforeConf, afterConf) => {
 };
 
 export const cli = () => {
-  program.version('0.1.2')
+  program.version(version)
     .description('Compares two configuration files and shows a difference.')
     .option('-f, --format [type]', 'Output format')
     .arguments('<firstConfig> <secondConfig>')
