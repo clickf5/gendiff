@@ -8,31 +8,46 @@ const gendiff = (beforeConf, afterConf) => {
   const beforeJSON = parser(beforeConf);
   const afterJSON = parser(afterConf);
 
-  const beforeData = _.toPairs(beforeJSON);
-  const afterData = _.toPairs(afterJSON);
-
   const root = {
-    changed: '',
+    changed: ' ',
     key: '',
     value: '',
   };
 
-  // const noChanged = Object.keys(beforeJSON)
-  //   .filter((key) => _.has(afterJSON, key) && beforeJSON[key] === afterJSON[key])
-  //   .map((key) => `   ${key}: ${beforeJSON[key]}\n`);
-  //
-  // const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
-  //   .filter((key) => !_.has(secondData, key));
-  //
-  // const added = getFilteredByNoHas(afterJSON, beforeJSON).map((key) => ` + ${key}: ${afterJSON[key]}\n`);
-  //
-  // const deleted = getFilteredByNoHas(beforeJSON, afterJSON).map((key) => ` - ${key}: ${beforeJSON[key]}\n`);
-  //
-  // const changed = Object.keys(beforeJSON)
-  //   .reduce((acc, key) => {
-  //     if (_.has(afterJSON, key) && beforeJSON[key] !== afterJSON[key]) acc.push(` + ${key}: ${afterJSON[key]}\n`, ` - ${key}: ${beforeJSON[key]}\n`);
-  //     return acc;
-  //   }, []);
+  const noChanged = Object.keys(beforeJSON)
+    .filter((key) => _.has(afterJSON, key) && beforeJSON[key] === afterJSON[key])
+    .map((key) => ({ ...root, key, value: beforeJSON[key] }));
+
+  const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
+    .filter((key) => !_.has(secondData, key));
+
+  const added = getFilteredByNoHas(afterJSON, beforeJSON).map((key) => ({
+    changed: '+',
+    key,
+    value: afterJSON[key],
+  }));
+
+  const deleted = getFilteredByNoHas(beforeJSON, afterJSON).map((key) => ({
+    changed: '-',
+    key,
+    value: beforeJSON[key],
+  }));
+
+  const changed = Object.keys(beforeJSON)
+    .reduce((acc, key) => {
+      if (_.has(afterJSON, key) && beforeJSON[key] !== afterJSON[key]) {
+        acc.push({
+          changed: '+',
+          key,
+          value: afterJSON[key],
+        }, {
+          changed: '-',
+          key,
+          value: beforeJSON[key],
+        });
+      }
+      return acc;
+    }, []);
 
   const result = [
     ...noChanged,
@@ -41,10 +56,12 @@ const gendiff = (beforeConf, afterConf) => {
     ...changed,
   ];
 
-  result.unshift('{\n');
-  result.push('}');
+  const str = result.reduce((acc, current) => {
+    const line = ` ${current.changed} ${current.key}: ${current.value}\n`;
+    return `${acc}${line}`;
+  }, '');
 
-  return result.reduce((acc, current) => (`${acc}${current}`), '');
+  return `{\n${str}}`;
 };
 
 export const cli = () => {
