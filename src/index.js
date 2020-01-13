@@ -4,9 +4,9 @@ import getParser from './parsers';
 
 const parser = getParser();
 
-const gendiff = (firstConfig, secondConfig) => {
-  const firstJSON = parser(firstConfig);
-  const secondJSON = parser(secondConfig);
+const gendiff = (beforeConf, afterConf) => {
+  const firstJSON = parser(beforeConf);
+  const secondJSON = parser(afterConf);
 
   const noChanged = Object.keys(firstJSON)
     .filter((key) => _.has(secondJSON, key) && firstJSON[key] === secondJSON[key])
