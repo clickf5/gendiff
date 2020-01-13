@@ -41,7 +41,7 @@ const gendiff = (beforeConf, afterConf) => {
 };
 
 export const cli = () => {
-  program.version('0.1.0')
+  program.version('0.1.2')
     .description('Compares two configuration files and shows a difference.')
     .option('-f, --format [type]', 'Output format')
     .arguments('<firstConfig> <secondConfig>')
