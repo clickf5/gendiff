@@ -8,30 +8,18 @@ const gendiff = (beforeConf, afterConf) => {
   const beforeJSON = parser(beforeConf);
   const afterJSON = parser(afterConf);
 
-  const root = {
-    changed: ' ',
-    key: '',
-    value: '',
-  };
-
   const noChanged = Object.keys(beforeJSON)
     .filter((key) => _.has(afterJSON, key) && beforeJSON[key] === afterJSON[key])
-    .map((key) => ({ ...root, key, value: beforeJSON[key] }));
+    .map((key) => ({ changed: ' ', key, value: beforeJSON[key] }));
 
   const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
     .filter((key) => !_.has(secondData, key));
 
-  const added = getFilteredByNoHas(afterJSON, beforeJSON).map((key) => ({
-    changed: '+',
-    key,
-    value: afterJSON[key],
-  }));
+  const added = getFilteredByNoHas(afterJSON, beforeJSON)
+    .map((key) => ({ changed: '+', key, value: afterJSON[key] }));
 
-  const deleted = getFilteredByNoHas(beforeJSON, afterJSON).map((key) => ({
-    changed: '-',
-    key,
-    value: beforeJSON[key],
-  }));
+  const deleted = getFilteredByNoHas(beforeJSON, afterJSON)
+    .map((key) => ({ changed: '-', key, value: beforeJSON[key] }));
 
   const changed = Object.keys(beforeJSON)
     .reduce((acc, key) => {
