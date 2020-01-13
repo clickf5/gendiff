@@ -10,7 +10,7 @@ describe('parsers', () => {
   test('json', () => {
     expect(getParser()(afterJSONPath)).toEqual(afterJSON);
   });
-  test('yaml', () => {
+  test('yml', () => {
     expect(getParser()(afterYAMLPath)).toEqual(afterJSON);
   });
 });

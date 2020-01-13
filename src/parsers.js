@@ -1,8 +1,10 @@
 import fs from 'fs';
+import yaml from 'js-yaml';
 import path from 'path';
 
 const parsers = {
   json: JSON.parse,
+  yml: yaml.safeLoad,
 };
 
 export default () => (filepath) => {
