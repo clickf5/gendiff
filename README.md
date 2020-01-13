@@ -4,3 +4,6 @@
 
 ## Install package and run "gendiff"
 [![asciicast](https://asciinema.org/a/X1LDeC65tHK5C9jsu6m8ZtnAH.svg)](https://asciinema.org/a/X1LDeC65tHK5C9jsu6m8ZtnAH)
+
+## YAML example
+[![asciicast](https://asciinema.org/a/q6J7ElrlxUyXWV625MrH9skhU.svg)](https://asciinema.org/a/q6J7ElrlxUyXWV625MrH9skhU)
