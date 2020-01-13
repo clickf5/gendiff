@@ -8,22 +8,31 @@ const gendiff = (beforeConf, afterConf) => {
   const beforeJSON = parser(beforeConf);
   const afterJSON = parser(afterConf);
 
-  const noChanged = Object.keys(beforeJSON)
-    .filter((key) => _.has(afterJSON, key) && beforeJSON[key] === afterJSON[key])
-    .map((key) => `   ${key}: ${beforeJSON[key]}\n`);
+  const beforeData = _.toPairs(beforeJSON);
+  const afterData = _.toPairs(afterJSON);
 
-  const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
-    .filter((key) => !_.has(secondData, key));
+  const root = {
+    changed: '',
+    key: '',
+    value: '',
+  };
 
-  const added = getFilteredByNoHas(afterJSON, beforeJSON).map((key) => ` + ${key}: ${afterJSON[key]}\n`);
-
-  const deleted = getFilteredByNoHas(beforeJSON, afterJSON).map((key) => ` - ${key}: ${beforeJSON[key]}\n`);
-
-  const changed = Object.keys(beforeJSON)
-    .reduce((acc, key) => {
-      if (_.has(afterJSON, key) && beforeJSON[key] !== afterJSON[key]) acc.push(` + ${key}: ${afterJSON[key]}\n`, ` - ${key}: ${beforeJSON[key]}\n`);
-      return acc;
-    }, []);
+  // const noChanged = Object.keys(beforeJSON)
+  //   .filter((key) => _.has(afterJSON, key) && beforeJSON[key] === afterJSON[key])
+  //   .map((key) => `   ${key}: ${beforeJSON[key]}\n`);
+  //
+  // const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
+  //   .filter((key) => !_.has(secondData, key));
+  //
+  // const added = getFilteredByNoHas(afterJSON, beforeJSON).map((key) => ` + ${key}: ${afterJSON[key]}\n`);
+  //
+  // const deleted = getFilteredByNoHas(beforeJSON, afterJSON).map((key) => ` - ${key}: ${beforeJSON[key]}\n`);
+  //
+  // const changed = Object.keys(beforeJSON)
+  //   .reduce((acc, key) => {
+  //     if (_.has(afterJSON, key) && beforeJSON[key] !== afterJSON[key]) acc.push(` + ${key}: ${afterJSON[key]}\n`, ` - ${key}: ${beforeJSON[key]}\n`);
+  //     return acc;
+  //   }, []);
 
   const result = [
     ...noChanged,
