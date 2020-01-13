@@ -36,25 +36,13 @@ const gendiff = (beforeConf, afterConf) => {
   const changed = Object.keys(beforeJSON)
     .reduce((acc, key) => {
       if (_.has(afterJSON, key) && beforeJSON[key] !== afterJSON[key]) {
-        acc.push({
-          changed: '+',
-          key,
-          value: afterJSON[key],
-        }, {
-          changed: '-',
-          key,
-          value: beforeJSON[key],
-        });
+        acc.push({ changed: '+', key, value: afterJSON[key] },
+          { changed: '-', key, value: beforeJSON[key] });
       }
       return acc;
     }, []);
 
-  const result = [
-    ...noChanged,
-    ...added,
-    ...deleted,
-    ...changed,
-  ];
+  const result = [...noChanged, ...added, ...deleted, ...changed];
 
   const str = result.reduce((acc, current) => {
     const line = ` ${current.changed} ${current.key}: ${current.value}\n`;
