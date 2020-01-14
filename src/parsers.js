@@ -12,5 +12,5 @@ const parsers = {
 export default () => (filepath) => {
   const type = path.extname(filepath).slice(1);
   console.log(`type: ${type}`);
-  return parsers[type](fs.readFileSync(filepath));
+  return parsers[type](fs.readFileSync(filepath, 'utf-8'));
 };
