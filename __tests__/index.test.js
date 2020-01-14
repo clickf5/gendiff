@@ -9,6 +9,9 @@ describe('gendiff', () => {
   const beforeYAMLPath = path.resolve(`${__dirname}/../__fixtures__/before.yml`);
   const afterYAMLPath = path.resolve(`${__dirname}/../__fixtures__/after.yml`);
 
+  const beforeINIPath = path.resolve(`${__dirname}/../__fixtures__/before.ini`);
+  const afterINIPath = path.resolve(`${__dirname}/../__fixtures__/after.ini`);
+
   const result = fs.readFileSync(`${__dirname}/../__fixtures__/result.txt`, 'utf8').trim();
 
   test('json', () => {
@@ -17,5 +20,9 @@ describe('gendiff', () => {
 
   test('yaml', () => {
     expect(gendiff(beforeYAMLPath, afterYAMLPath)).toEqual(result);
+  });
+
+  test('ini', () => {
+    expect(gendiff(beforeINIPath, afterINIPath)).toEqual(result);
   });
 });
