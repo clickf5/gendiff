@@ -7,3 +7,6 @@
 
 ## YAML example
 [![asciicast](https://asciinema.org/a/q6J7ElrlxUyXWV625MrH9skhU.svg)](https://asciinema.org/a/q6J7ElrlxUyXWV625MrH9skhU)
+
+## INI example
+[![asciicast](https://asciinema.org/a/MCqfPDbNM9YfIOnqAcVP96wHf.svg)](https://asciinema.org/a/MCqfPDbNM9YfIOnqAcVP96wHf)
