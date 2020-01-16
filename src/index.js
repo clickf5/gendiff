@@ -6,27 +6,31 @@ import { version } from '../package.json';
 const parser = getParser();
 
 const gendiff = (beforeConf, afterConf) => {
-  const beforeJSON = parser(beforeConf);
-  const afterJSON = parser(afterConf);
+  const beforeObject = parser(beforeConf);
+  const afterObject = parser(afterConf);
 
-  const noChanged = Object.keys(beforeJSON)
-    .filter((key) => _.has(afterJSON, key) && beforeJSON[key] === afterJSON[key])
-    .map((key) => ({ changed: ' ', key, value: beforeJSON[key] }));
+  const keys = [...Object.keys(beforeObject), ...Object.keys(afterObject)]
+    .filter((value, index, array) => array.indexOf(value) === index);
+  console.log(keys);
+
+  const noChanged = Object.keys(beforeObject)
+    .filter((key) => _.has(afterObject, key) && beforeObject[key] === afterObject[key])
+    .map((key) => ({ changed: ' ', key, value: beforeObject[key] }));
 
   const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
     .filter((key) => !_.has(secondData, key));
 
-  const added = getFilteredByNoHas(afterJSON, beforeJSON)
-    .map((key) => ({ changed: '+', key, value: afterJSON[key] }));
+  const added = getFilteredByNoHas(afterObject, beforeObject)
+    .map((key) => ({ changed: '+', key, value: afterObject[key] }));
 
-  const deleted = getFilteredByNoHas(beforeJSON, afterJSON)
-    .map((key) => ({ changed: '-', key, value: beforeJSON[key] }));
+  const deleted = getFilteredByNoHas(beforeObject, afterObject)
+    .map((key) => ({ changed: '-', key, value: beforeObject[key] }));
 
-  const changed = Object.keys(beforeJSON)
+  const changed = Object.keys(beforeObject)
     .reduce((acc, key) => {
-      if (_.has(afterJSON, key) && beforeJSON[key] !== afterJSON[key]) {
-        acc.push({ changed: '+', key, value: afterJSON[key] },
-          { changed: '-', key, value: beforeJSON[key] });
+      if (_.has(afterObject, key) && beforeObject[key] !== afterObject[key]) {
+        acc.push({ changed: '+', key, value: afterObject[key] },
+          { changed: '-', key, value: beforeObject[key] });
       }
       return acc;
     }, []);
