@@ -4,4 +4,12 @@
   + age: 15
   - city: Tula
   + sex: male
+    parents: {
+      - father: John
+      + father: Joshua
+      - mother: Helen
+    }
+  + relatives: {
+      brother: Peter
+  }
 }

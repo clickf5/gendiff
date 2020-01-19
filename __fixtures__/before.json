@@ -1,5 +1,9 @@
 {
   "name": "Eugene",
   "age": 10,
-  "city": "Tula"
+  "city": "Tula",
+  "parents": {
+    "father": "John",
+    "mother": "Helen"
+  }
 }

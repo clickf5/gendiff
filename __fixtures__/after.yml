@@ -1,3 +1,7 @@
 name: Eugene
 age: 15
 sex: male
+parents:
+  father: Joshua
+relatives:
+  brother: Peter
