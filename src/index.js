@@ -11,38 +11,52 @@ const gendiff = (beforeConf, afterConf) => {
 
   const keys = [...Object.keys(beforeObject), ...Object.keys(afterObject)]
     .filter((value, index, array) => array.indexOf(value) === index);
-  console.log(keys);
+  // console.log(keys);
 
-  const noChanged = Object.keys(beforeObject)
-    .filter((key) => _.has(afterObject, key) && beforeObject[key] === afterObject[key])
-    .map((key) => ({ changed: ' ', key, value: beforeObject[key] }));
+  const actions = [
+    {
+      name: 'wasAdded',
+      check: (key) => _.has(afterObject, key) && !_.has(beforeObject, key),
+    },
+    {
+      name: 'wasDeleted',
+      check: (key) => _.has(beforeObject, key) && !_.has(afterObject, key),
+    },
+    {
+      name: 'wasChanged',
+      check: (key) => beforeObject[key] !== afterObject[key],
+    },
+    {
+      name: 'notChanged',
+      check: (key) => beforeObject[key] === afterObject[key],
+    },
+  ];
 
-  const getFilteredByNoHas = (firstData, secondData) => Object.keys(firstData)
-    .filter((key) => !_.has(secondData, key));
+  const ast = keys.reduce((acc, key) => {
+    const action = actions.find((item) => item.check(key));
+    const value = beforeObject[key] || afterObject[key];
+    const newValue = (action.name === 'wasChanged') ? afterObject[key] : '';
 
-  const added = getFilteredByNoHas(afterObject, beforeObject)
-    .map((key) => ({ changed: '+', key, value: afterObject[key] }));
+    return [...acc, {
+      action: action.name, key, value, newValue,
+    }];
+  }, []);
+  // console.log(ast);
 
-  const deleted = getFilteredByNoHas(beforeObject, afterObject)
-    .map((key) => ({ changed: '-', key, value: beforeObject[key] }));
+  const signs = {
+    wasAdded: '+',
+    wasDeleted: '-',
+    wasChanged: ' ',
+    notChanged: ' ',
+  };
 
-  const changed = Object.keys(beforeObject)
-    .reduce((acc, key) => {
-      if (_.has(afterObject, key) && beforeObject[key] !== afterObject[key]) {
-        acc.push({ changed: '+', key, value: afterObject[key] },
-          { changed: '-', key, value: beforeObject[key] });
-      }
-      return acc;
-    }, []);
+  const str = ast.reduce((acc, current) => {
+    const line = (current.action === 'wasChanged') ? [`${' '.repeat(2)}- ${current.key}: ${current.value}`, `${' '.repeat(2)}+ ${current.key}: ${current.newValue}`] : [`${' '.repeat(2)}${signs[current.action]} ${current.key}: ${current.value}`];
+    return [...acc, ...line];
+  }, []);
+  // console.log(str);
 
-  const result = [...noChanged, ...added, ...deleted, ...changed];
-
-  const str = result.reduce((acc, current) => {
-    const line = ` ${current.changed} ${current.key}: ${current.value}\n`;
-    return `${acc}${line}`;
-  }, '');
-
-  return `{\n${str}}`;
+  return ['{', ...str, '}'].join('\n');
 };
 
 export const cli = () => {
