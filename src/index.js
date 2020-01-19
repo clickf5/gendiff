@@ -5,10 +5,7 @@ import { version } from '../package.json';
 
 const parser = getParser();
 
-const gendiff = (beforeConf, afterConf) => {
-  const beforeObject = parser(beforeConf);
-  const afterObject = parser(afterConf);
-
+const getAST = (beforeObject, afterObject) => {
   const keys = [...Object.keys(beforeObject), ...Object.keys(afterObject)]
     .filter((value, index, array) => array.indexOf(value) === index);
   // console.log(keys);
@@ -32,7 +29,7 @@ const gendiff = (beforeConf, afterConf) => {
     },
   ];
 
-  const ast = keys.reduce((acc, key) => {
+  return keys.reduce((acc, key) => {
     const action = actions.find((item) => item.check(key));
     const value = beforeObject[key] || afterObject[key];
     const newValue = (action.name === 'wasChanged') ? afterObject[key] : '';
@@ -42,6 +39,13 @@ const gendiff = (beforeConf, afterConf) => {
     }];
   }, []);
   // console.log(ast);
+};
+
+const gendiff = (beforeConf, afterConf) => {
+  const beforeObject = parser(beforeConf);
+  const afterObject = parser(afterConf);
+
+  const ast = getAST(beforeObject, afterObject);
 
   const signs = {
     wasAdded: '+',
