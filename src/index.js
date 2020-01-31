@@ -14,52 +14,30 @@ const getAST = (beforeObject, afterObject) => {
 
   const actions = [
     {
-      name: 'wasAdded',
       check: (key) => _.has(afterObject, key) && !_.has(beforeObject, key),
-      getValue: (key) => afterObject[key],
-      getNewValue: () => '',
-      getChildren: () => [],
+      action: (key) => ({ name: 'wasAdded', key, value: afterObject[key] }),
     },
     {
-      name: 'wasDeleted',
       check: (key) => _.has(beforeObject, key) && !_.has(afterObject, key),
-      getValue: (key) => beforeObject[key],
-      getNewValue: () => '',
-      getChildren: () => [],
+      action: (key) => ({ name: 'wasDeleted', key, value: beforeObject[key] }),
     },
     {
-      name: 'hasChildren',
       check: (key) => (beforeObject[key] instanceof Object && afterObject[key] instanceof Object),
-      getValue: (key) => beforeObject[key],
-      getNewValue: (key) => afterObject[key],
-      getChildren: (key) => getAST(beforeObject[key], afterObject[key]),
+      action: (key) => ({ name: 'hasChildren', key, children: getAST(beforeObject[key], afterObject[key]) }),
     },
     {
-      name: 'wasChanged',
       check: (key) => beforeObject[key] !== afterObject[key],
-      getValue: (key) => beforeObject[key],
-      getNewValue: (key) => afterObject[key],
-      getChildren: () => [],
+      action: (key) => ({ name: 'wasChanged', key, value: beforeObject[key], newValue: afterObject[key] }),
     },
     {
-      name: 'notChanged',
       check: (key) => beforeObject[key] === afterObject[key],
-      getValue: (key) => beforeObject[key],
-      getNewValue: () => '',
-      getChildren: () => [],
+      action: (key) => ({ name: 'notChanged', key, value: beforeObject[key] }),
     },
   ];
 
   return keys.reduce((acc, key) => {
-    const action = actions.find((item) => item.check(key));
-
-    return [...acc, {
-      action: action.name,
-      key,
-      value: action.getValue(key),
-      newValue: action.getNewValue(key),
-      children: action.getChildren(key),
-    }];
+    const ast = actions.find((item) => item.check(key)).action;
+    return [...acc, ast(key)];
   }, []);
 };
 
@@ -69,11 +47,7 @@ const gendiff = (beforeConf, afterConf, format) => {
 
   const ast = getAST(beforeObject, afterObject);
 
-  console.log(format);
-
-  const render = getRender(format);
-
-  return render(ast);
+  return getRender(format)(ast);
 };
 
 export const cli = () => {

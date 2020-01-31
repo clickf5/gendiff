@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import gendiff from '../src';
 
-const extensions = ['json', 'yml', 'ini'];
+const extensions = ['json'];
 
 test.each(extensions)('%s gendiff', (extension) => {
   const beforeFilePath = path.resolve(`${__dirname}/../__fixtures__/before.${extension}`);

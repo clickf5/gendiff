@@ -6,6 +6,10 @@
     "father": "Joshua"
   },
   "relatives": {
-    "brother": "Peter"
+    "brother": "Peter",
+    "somebody": {
+      "name": "Vasya",
+      "age": 100
+    }
   }
 }
