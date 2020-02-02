@@ -6,7 +6,7 @@ const getUniqKeys = (obj1, obj2) => [...Object.keys(obj1), ...Object.keys(obj2)]
 const getAST = (beforeObject, afterObject) => {
   const keys = getUniqKeys(beforeObject, afterObject);
 
-  const actions = [
+  const propertyActions = [
     {
       check: (key) => _.has(afterObject, key) && !_.has(beforeObject, key),
       action: (key) => ({ state: 'added', key, value: afterObject[key] }),
@@ -31,10 +31,9 @@ const getAST = (beforeObject, afterObject) => {
     },
   ];
 
-  return keys.reduce((acc, key) => {
-    const ast = actions.find((item) => item.check(key)).action;
-    return [...acc, ast(key)];
-  }, []);
+  const getPropertyActions = (key) => propertyActions.find((item) => item.check(key));
+
+  return keys.map((key) => getPropertyActions(key).action(key));
 };
 
 export default getAST;
