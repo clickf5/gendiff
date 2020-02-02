@@ -1,6 +1,6 @@
 import program from 'commander';
 import getParser from './parsers';
-import getRender from './renderers';
+import getRender from './formaters';
 import getAST from './buildAst';
 import { version } from '../package.json';
 

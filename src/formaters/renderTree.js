@@ -30,9 +30,4 @@ const renderTree = (ast, level = 1) => {
   return _.flatten(['{', ...mapped, `${indentForQoutes}}`]).join('\n');
 };
 
-
-const renderers = {
-  tree: renderTree,
-};
-
-export default (format) => renderers[format];
+export default renderTree;
