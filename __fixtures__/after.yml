@@ -5,3 +5,6 @@ parents:
   father: Joshua
 relatives:
   brother: Peter
+  somebody:
+    name: Vasya
+    age: 100

@@ -9,5 +9,5 @@ test.each(extensions)('%s gendiff', (extension) => {
   const afterFilePath = path.resolve(`${__dirname}/../__fixtures__/after.${extension}`);
   const result = fs.readFileSync(`${__dirname}/../__fixtures__/result.txt`, 'utf8').trim();
 
-  expect(gendiff(beforeFilePath, afterFilePath, 'json')).toEqual(result);
+  expect(gendiff(beforeFilePath, afterFilePath, 'tree')).toEqual(result);
 });
