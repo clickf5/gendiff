@@ -10,3 +10,6 @@
 
 ## INI example
 [![asciicast](https://asciinema.org/a/MCqfPDbNM9YfIOnqAcVP96wHf.svg)](https://asciinema.org/a/MCqfPDbNM9YfIOnqAcVP96wHf)
+
+## recursive example
+[![asciicast](https://asciinema.org/a/ZMia3McJpPKw4ozc5k0TuFGKl.svg)](https://asciinema.org/a/ZMia3McJpPKw4ozc5k0TuFGKl)
