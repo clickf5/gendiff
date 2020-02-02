@@ -27,7 +27,9 @@ const getAST = (beforeObject, afterObject) => {
     },
     {
       check: (key) => beforeObject[key] !== afterObject[key],
-      action: (key) => ({ name: 'wasChanged', key, value: beforeObject[key], newValue: afterObject[key] }),
+      action: (key) => ({
+        name: 'wasChanged', key, value: beforeObject[key], newValue: afterObject[key],
+      }),
     },
     {
       check: (key) => beforeObject[key] === afterObject[key],
@@ -47,7 +49,9 @@ const gendiff = (beforeConf, afterConf, format) => {
 
   const ast = getAST(beforeObject, afterObject);
 
-  return getRender(format)(ast);
+  const render = getRender(format);
+
+  return render(ast);
 };
 
 export const cli = () => {

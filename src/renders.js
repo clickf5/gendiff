@@ -1,16 +1,12 @@
 const renderJSON = (ast) => {
-  const signs = {
-    wasAdded: '+',
-    wasDeleted: '-',
-    hasChildren: ' ',
-    wasChanged: ' ',
-    notChanged: ' ',
+  const iter = (data, level) => {
+    const [first, ...rest] = data;
+
   };
 
-  const str = ast.map((current) => {
-    console.log(current);
-  });
+  return iter(ast, 1);
 };
+
 
 const renders = {
   json: renderJSON,
