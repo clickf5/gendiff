@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const isCompexValue = (val) => (_.isObject(val)) ? '[complex value]' : val;
+const isCompexValue = (val) => ((_.isObject(val)) ? '[complex value]' : val);
 
 const renderPlain = (ast, parents = '') => {
   const mapped = ast.map((current) => {
