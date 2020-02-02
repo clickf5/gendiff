@@ -7,7 +7,7 @@ const renderPlain = (ast, parents = '') => {
     const propertyName = (parents === '') ? current.key : `${parents}.${current.key}`;
     switch (current.state) {
       case 'added':
-        return `Property '${propertyName}' was added with value ${isCompexValue(current.value)}`;
+        return `Property '${propertyName}' was added with value: ${isCompexValue(current.value)}`;
       case 'deleted':
         return `Property '${propertyName}' was deleted`;
       case 'hasChildren':
@@ -21,7 +21,7 @@ const renderPlain = (ast, parents = '') => {
     }
   });
 
-  return mapped.filter((item) => item !== '').join('/n');
+  return mapped.filter((item) => item !== '').join('\n');
 };
 
 export default renderPlain;
