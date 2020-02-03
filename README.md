@@ -13,3 +13,6 @@
 
 ## recursive example
 [![asciicast](https://asciinema.org/a/ZMia3McJpPKw4ozc5k0TuFGKl.svg)](https://asciinema.org/a/ZMia3McJpPKw4ozc5k0TuFGKl)
+
+## plain text format
+[![asciicast](https://asciinema.org/a/OO1pa2MWmRfA7ufBJbHG9dTn7.svg)](https://asciinema.org/a/OO1pa2MWmRfA7ufBJbHG9dTn7)
