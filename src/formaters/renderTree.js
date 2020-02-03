@@ -9,7 +9,7 @@ const stringify = (obj, indent) => ((_.isObject(obj))
   }), `${indent}  }`]).join('\n') : `${obj}`);
 
 const renderTree = (ast, level = 1) => {
-  const indentForQoutes = (' ').repeat(level * indentStep - 4);
+  const indentForQoutes = (' ').repeat(level * indentStep - indentStep);
   const indent = (' ').repeat(level * indentStep - 2);
   const mapped = ast.map((current) => {
     switch (current.state) {
