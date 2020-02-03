@@ -9,6 +9,7 @@ describe.each(extensions)('%s gendiff', (extension) => {
   const afterFilePath = path.resolve(`${__dirname}/../__fixtures__/after.${extension}`);
   const resultTree = fs.readFileSync(`${__dirname}/../__fixtures__/result.txt`, 'utf8').trim();
   const resultPlain = fs.readFileSync(`${__dirname}/../__fixtures__/result_plain.txt`, 'utf8').trim();
+  const resultJSON = fs.readFileSync(`${__dirname}/../__fixtures__/result_json.txt`, 'utf8').trim();
 
   test('tree', () => {
     expect(gendiff(beforeFilePath, afterFilePath, 'tree')).toEqual(resultTree);
@@ -16,5 +17,9 @@ describe.each(extensions)('%s gendiff', (extension) => {
 
   test('plain', () => {
     expect(gendiff(beforeFilePath, afterFilePath, 'plain')).toEqual(resultPlain);
+  });
+
+  test('json', () => {
+    expect(gendiff(beforeFilePath, afterFilePath, 'json')).toEqual(resultJSON);
   });
 });
