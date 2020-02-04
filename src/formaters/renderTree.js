@@ -8,23 +8,20 @@ const stringify = (obj, indent) => ((_.isObject(obj))
     return `${newIndent}  ${key}: ${stringify(obj[key], newIndent)}`;
   }), `${indent}  }`]).join('\n') : `${obj}`);
 
+const propertyActions = {
+  added: (indent, node) => `${indent}+ ${node.key}: ${stringify(node.value, indent)}`,
+  deleted: (indent, node) => `${indent}- ${node.key}: ${stringify(node.value, indent)}`,
+  hasChildren: (indent, node, func, level) => `${indent}  ${node.key}: ${func(node.children, level + 1)}`,
+  changed: (indent, node) => [`${indent}- ${node.key}: ${stringify(node.value, indent)}`, `${indent}+ ${node.key}: ${stringify(node.newValue, indent)}`],
+  unchanged: (indent, node) => `${indent}  ${node.key}: ${stringify(node.value, indent)}`,
+};
+
 const renderTree = (ast, level = 1) => {
   const indentForQoutes = (' ').repeat(level * indentStep - indentStep);
   const indent = (' ').repeat(level * indentStep - 2);
-  const mapped = ast.map((current) => {
-    switch (current.state) {
-      case 'added':
-        return `${indent}+ ${current.key}: ${stringify(current.value, indent)}`;
-      case 'deleted':
-        return `${indent}- ${current.key}: ${stringify(current.value, indent)}`;
-      case 'hasChildren':
-        return `${indent}  ${current.key}: ${renderTree(current.children, level + 1)}`;
-      case 'changed':
-        return [`${indent}- ${current.key}: ${stringify(current.value, indent)}`, `${indent}+ ${current.key}: ${stringify(current.newValue, indent)}`];
-      case 'unchanged':
-        return `${indent}  ${current.key}: ${stringify(current.value, indent)}`;
-      default: throw new Error(`Invalid state '${current.state}'`);
-    }
+  const mapped = ast.map((node) => {
+    const action = propertyActions[node.state];
+    return action(indent, node, renderTree, level);
   });
 
   return _.flatten(['{', ...mapped, `${indentForQoutes}}`]).join('\n');
