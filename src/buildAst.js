@@ -5,7 +5,7 @@ const getUniqKeys = (obj1, obj2) => [...Object.keys(obj1), ...Object.keys(obj2)]
 
 const propertyActions = [
   {
-    check: (beforeObject, afterObject, key) => _.has(afterObject, key) && !_.has(beforeObject, key),
+    check: (beforeObject, afterObject, key) => !_.has(beforeObject, key) && _.has(afterObject, key),
     state: 'added',
     action: (beforeObject, afterObject, key) => ({ value: afterObject[key] }),
   },
