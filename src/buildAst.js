@@ -3,37 +3,52 @@ import _ from 'lodash';
 const getUniqKeys = (obj1, obj2) => [...Object.keys(obj1), ...Object.keys(obj2)]
   .filter((value, index, array) => array.indexOf(value) === index);
 
+const propertyActions = [
+  {
+    check: (beforeObject, afterObject, key) => _.has(afterObject, key) && !_.has(beforeObject, key),
+    state: 'added',
+    action: (beforeObject, afterObject, key) => ({ value: afterObject[key] }),
+  },
+  {
+    check: (beforeObject, afterObject, key) => _.has(beforeObject, key) && !_.has(afterObject, key),
+    state: 'deleted',
+    action: (beforeObject, afterObject, key) => ({ value: beforeObject[key] }),
+  },
+  {
+    check: (beforeObject, afterObject, key) => (_.isObject(beforeObject[key])
+      && _.isObject(afterObject[key])),
+    state: 'hasChildren',
+    action: (beforeObject, afterObject, key, func) => (
+      {
+        children: func(beforeObject[key], afterObject[key]),
+      }),
+  },
+  {
+    check: (beforeObject, afterObject, key) => beforeObject[key] !== afterObject[key],
+    state: 'changed',
+    action: (beforeObject, afterObject, key) => (
+      {
+        value: beforeObject[key],
+        newValue: afterObject[key],
+      }),
+  },
+  {
+    check: (beforeObject, afterObject, key) => beforeObject[key] === afterObject[key],
+    state: 'unchanged',
+    action: (beforeObject, afterObject, key) => ({ value: beforeObject[key] }),
+  },
+];
+
+const getPropertyActions = (beforeObject, afterObject, key) => propertyActions.find((item) => (
+  item.check(beforeObject, afterObject, key)
+));
+
 const getAST = (beforeObject, afterObject) => {
   const keys = getUniqKeys(beforeObject, afterObject);
-
-  const propertyActions = [
-    {
-      check: (key) => _.has(afterObject, key) && !_.has(beforeObject, key),
-      action: (key) => ({ state: 'added', key, value: afterObject[key] }),
-    },
-    {
-      check: (key) => _.has(beforeObject, key) && !_.has(afterObject, key),
-      action: (key) => ({ state: 'deleted', key, value: beforeObject[key] }),
-    },
-    {
-      check: (key) => (_.isObject(beforeObject[key]) && _.isObject(afterObject[key])),
-      action: (key) => ({ state: 'hasChildren', key, children: getAST(beforeObject[key], afterObject[key]) }),
-    },
-    {
-      check: (key) => beforeObject[key] !== afterObject[key],
-      action: (key) => ({
-        state: 'changed', key, value: beforeObject[key], newValue: afterObject[key],
-      }),
-    },
-    {
-      check: (key) => beforeObject[key] === afterObject[key],
-      action: (key) => ({ state: 'unchanged', key, value: beforeObject[key] }),
-    },
-  ];
-
-  const getPropertyActions = (key) => propertyActions.find((item) => item.check(key));
-
-  return keys.map((key) => getPropertyActions(key).action(key));
+  return keys.map((key) => {
+    const { state, action } = getPropertyActions(beforeObject, afterObject, key);
+    return { state, key, ...action(beforeObject, afterObject, key, getAST) };
+  });
 };
 
 export default getAST;
