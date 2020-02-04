@@ -9,11 +9,11 @@ const stringify = (obj, indent) => ((_.isObject(obj))
   }), `${indent}  }`]).join('\n') : `${obj}`);
 
 const propertyActions = {
-  added: (indent, node) => `${indent}+ ${node.key}: ${stringify(node.value, indent)}`,
-  deleted: (indent, node) => `${indent}- ${node.key}: ${stringify(node.value, indent)}`,
-  hasChildren: (indent, node, func, level) => `${indent}  ${node.key}: ${func(node.children, level + 1)}`,
-  changed: (indent, node) => [`${indent}- ${node.key}: ${stringify(node.value, indent)}`, `${indent}+ ${node.key}: ${stringify(node.newValue, indent)}`],
-  unchanged: (indent, node) => `${indent}  ${node.key}: ${stringify(node.value, indent)}`,
+  added: (indent, node, stringifyFunc) => `${indent}+ ${node.key}: ${stringifyFunc(node.value, indent)}`,
+  deleted: (indent, node, stringifyFunc) => `${indent}- ${node.key}: ${stringifyFunc(node.value, indent)}`,
+  hasChildren: (indent, node, stringifyFunc, func, level) => `${indent}  ${node.key}: ${func(node.children, level + 1)}`,
+  changed: (indent, node, stringifyFunc) => [`${indent}- ${node.key}: ${stringifyFunc(node.value, indent)}`, `${indent}+ ${node.key}: ${stringifyFunc(node.newValue, indent)}`],
+  unchanged: (indent, node, stringifyFunc) => `${indent}  ${node.key}: ${stringifyFunc(node.value, indent)}`,
 };
 
 const renderTree = (ast, level = 1) => {
@@ -21,7 +21,7 @@ const renderTree = (ast, level = 1) => {
   const indent = (' ').repeat(level * indentStep - 2);
   const mapped = ast.map((node) => {
     const action = propertyActions[node.state];
-    return action(indent, node, renderTree, level);
+    return action(indent, node, stringify, renderTree, level);
   });
 
   return _.flatten(['{', ...mapped, `${indentForQoutes}}`]).join('\n');
