@@ -1,40 +1,40 @@
 import _ from 'lodash';
 
-const propertyActions = [
-  {
-    check: (val) => !_.isNaN(Number(val)),
-    action: (val) => Number(val),
-  },
-  {
-    check: (val) => _.isString(val),
-    action: (val) => `'${val}'`,
-  },
+const typeActions = [
   {
     check: (val) => _.isObject(val),
     action: () => '[complex value]',
   },
+  {
+    check: (val) => !_.isNaN(_.toNumber(val)),
+    action: (val) => _.toNumber(val),
+  },
+  {
+    check: (val) => _.isNaN(_.toNumber(val)),
+    action: (val) => `'${val}'`,
+  },
 ];
 
-const getPropertyActions = (val) => propertyActions.find((item) => item.check(val));
+const getTypeAction = (val) => typeActions.find((item) => item.check(val));
 
-const stringify = (val) => getPropertyActions(val).action(val);
+const stringify = (val) => {
+  const action = getTypeAction(val);
+  return action(val);
+};
+
+const propertyActions = {
+  added: (node, stringifyFunc) => `Property '${node.key}' was added with value: ${stringifyFunc(node.value)}`,
+  deleted: (node) => `Property '${node.key}' was deleted`,
+  hasChildren: (node, stringifyFunc, func) => func(node.children, node.key),
+  changed: (node, stringifyFunc) => `Property '${node.key}' was changed from ${stringifyFunc(node.value)} to ${stringifyFunc(node.newValue)}`,
+};
 
 const renderPlain = (ast, parents = '') => {
   const filtered = ast.filter((item) => item.state !== 'unchanged');
-  const mapped = filtered.map((current) => {
-    const propertyName = (parents === '') ? current.key : `${parents}.${current.key}`;
-    switch (current.state) {
-      case 'added':
-        return `Property '${propertyName}' was added with value: ${stringify(current.value)}`;
-      case 'deleted':
-        return `Property '${propertyName}' was deleted`;
-      case 'hasChildren':
-        return renderPlain(current.children, propertyName);
-      case 'changed':
-        return `Property '${propertyName}' was changed from ${stringify(current.value)} to ${stringify(current.newValue)}`;
-      default:
-        throw new Error(`Invalid state '${current.state}'`);
-    }
+  const mapped = filtered.map((node) => {
+    const newKey = (parents === '') ? node.key : `${parents}.${node.key}`;
+    const action = propertyActions[node.state];
+    return action({ ...node, key: newKey }, stringify, renderPlain);
   });
 
   return mapped.join('\n');
