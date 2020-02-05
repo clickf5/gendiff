@@ -8,4 +8,4 @@ const formaters = {
   json: renderJSON,
 };
 
-export default (format) => formaters[format];
+export default () => (data, format) => formaters[format](data);
