@@ -2,6 +2,7 @@
   "name": "Eugene",
   "age": 10,
   "city": "Tula",
+  "haveWork": false,
   "parents": {
     "father": "John",
     "mother": "Helen"

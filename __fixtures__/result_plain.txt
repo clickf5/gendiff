@@ -1,5 +1,6 @@
 Property 'age' was changed from 10 to 15
 Property 'city' was deleted
+Property 'haveWork' was changed from false to true
 Property 'parents.father' was changed from 'John' to 'Joshua'
 Property 'parents.mother' was deleted
 Property 'sex' was added with value: 'male'

@@ -3,6 +3,8 @@
   - age: 10
   + age: 15
   - city: Tula
+  - haveWork: false
+  + haveWork: true
     parents: {
       - father: John
       + father: Joshua

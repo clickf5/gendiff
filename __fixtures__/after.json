@@ -2,6 +2,7 @@
   "name": "Eugene",
   "age": 15,
   "sex": "male",
+  "haveWork": true,
   "parents": {
     "father": "Joshua"
   },
