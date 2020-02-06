@@ -7,19 +7,19 @@ const extensions = ['json', 'yml', 'ini'];
 describe.each(extensions)('%s gendiff', (extension) => {
   const beforeFilePath = path.resolve(`${__dirname}/../__fixtures__/before.${extension}`);
   const afterFilePath = path.resolve(`${__dirname}/../__fixtures__/after.${extension}`);
-  const resultTree = fs.readFileSync(`${__dirname}/../__fixtures__/result.txt`, 'utf8').trim();
-  const resultPlain = fs.readFileSync(`${__dirname}/../__fixtures__/result_plain.txt`, 'utf8').trim();
-  const resultJSON = fs.readFileSync(`${__dirname}/../__fixtures__/result_json.txt`, 'utf8').trim();
 
   test('tree', () => {
-    expect(gendiff(beforeFilePath, afterFilePath, 'tree')).toEqual(resultTree);
+    const result = fs.readFileSync(`${__dirname}/../__fixtures__/result_tree.txt`, 'utf8').trim();
+    expect(gendiff(beforeFilePath, afterFilePath, 'tree')).toEqual(result);
   });
 
   test('plain', () => {
-    expect(gendiff(beforeFilePath, afterFilePath, 'plain')).toEqual(resultPlain);
+    const result = fs.readFileSync(`${__dirname}/../__fixtures__/result_plain.txt`, 'utf8').trim();
+    expect(gendiff(beforeFilePath, afterFilePath, 'plain')).toEqual(result);
   });
 
   test('json', () => {
-    expect(gendiff(beforeFilePath, afterFilePath, 'json')).toEqual(resultJSON);
+    const result = fs.readFileSync(`${__dirname}/../__fixtures__/result_json.txt`, 'utf8').trim();
+    expect(gendiff(beforeFilePath, afterFilePath, 'json')).toEqual(result);
   });
 });
