@@ -18,7 +18,7 @@ const typeActions = [
 const getTypeAction = (val) => typeActions.find((item) => item.check(val));
 
 const stringify = (val) => {
-  const action = getTypeAction(val);
+  const { action } = getTypeAction(val);
   return action(val);
 };
 
