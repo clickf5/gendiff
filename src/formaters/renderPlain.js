@@ -6,6 +6,10 @@ const typeActions = [
     action: () => '[complex value]',
   },
   {
+    check: (val) => _.isBoolean(val),
+    action: (val) => `${val}`,
+  },
+  {
     check: (val) => !_.isNaN(_.toNumber(val)),
     action: (val) => _.toNumber(val),
   },
