@@ -17,7 +17,7 @@ const propertyActions = [
   {
     check: (beforeObject, afterObject, key) => (_.isObject(beforeObject[key])
       && _.isObject(afterObject[key])),
-    state: 'hasChildren',
+    state: 'nested',
     action: (beforeObject, afterObject, key, func) => (
       {
         children: func(beforeObject[key], afterObject[key]),

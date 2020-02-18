@@ -29,7 +29,7 @@ const stringify = (val) => {
 const propertyActions = {
   added: (node, stringifyFunc) => `Property '${node.key}' was added with value: ${stringifyFunc(node.value)}`,
   deleted: (node) => `Property '${node.key}' was deleted`,
-  hasChildren: (node, stringifyFunc, func) => func(node.children, node.key),
+  nested: (node, stringifyFunc, func) => func(node.children, node.key),
   changed: (node, stringifyFunc) => `Property '${node.key}' was changed from ${stringifyFunc(node.value)} to ${stringifyFunc(node.newValue)}`,
 };
 
