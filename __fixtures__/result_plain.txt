@@ -1,13 +1,13 @@
-Property 'name' was changed from 'Nebuchadnezzar' to 'Cesar'
 Property 'IP' was deleted
-Property 'location' was changed from 'Tula' to [complex value]
-Property 'uptime' was changed from 100 to 500
-Property 'balancer' was changed from true to [complex value]
-Property 'administrator' was changed from [complex value] to 'John'
-Property 'proxy' was deleted
-Property 'services.telephony.provider' was changed from 'rostelecom' to 'mango'
-Property 'services.telephony.enable' was changed from true to false
-Property 'services.telephony.max_station' was added with value: 25
-Property 'services.queue' was deleted
 Property 'IP1' was added with value: '10.10.10.10'
 Property 'IP2' was added with value: '10.10.11.10'
+Property 'administrator' was changed from [complex value] to 'John'
+Property 'balancer' was changed from true to [complex value]
+Property 'location' was changed from 'Tula' to [complex value]
+Property 'name' was changed from 'Nebuchadnezzar' to 'Cesar'
+Property 'proxy' was deleted
+Property 'services.queue' was deleted
+Property 'services.telephony.enable' was changed from true to false
+Property 'services.telephony.max_station' was added with value: 25
+Property 'services.telephony.provider' was changed from 'rostelecom' to 'mango'
+Property 'uptime' was changed from 100 to 500

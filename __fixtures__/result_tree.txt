@@ -1,43 +1,43 @@
 {
-  - name: Nebuchadnezzar
-  + name: Cesar
   - IP: 10.10.10.10
-  - location: Tula
-  + location: {
-        city: Moscow
-        address: Lenina street 20
-    }
-  - uptime: 100
-  + uptime: 500
-    cpu: Intel Xeon
-  - balancer: true
-  + balancer: {
-        name: Exodus
-        IP: 10.12.13.14
-    }
+  + IP1: 10.10.10.10
+  + IP2: 10.10.11.10
   - administrator: {
         name: Eugene
         status: online
     }
   + administrator: John
+  - balancer: true
+  + balancer: {
+        name: Exodus
+        IP: 10.12.13.14
+    }
+    cpu: Intel Xeon
+  - location: Tula
+  + location: {
+        city: Moscow
+        address: Lenina street 20
+    }
+  - name: Nebuchadnezzar
+  + name: Cesar
   - proxy: {
         name: haproxy
         IP: 192.168.22.22
     }
     services: {
-        telephony: {
-          - provider: rostelecom
-          + provider: mango
-          - enable: true
-          + enable: false
-          + max_station: 25
-        }
       - queue: {
             name: rabbit
             enable: false
             max: 2000
         }
+        telephony: {
+          - enable: true
+          + enable: false
+          + max_station: 25
+          - provider: rostelecom
+          + provider: mango
+        }
     }
-  + IP1: 10.10.10.10
-  + IP2: 10.10.11.10
+  - uptime: 100
+  + uptime: 500
 }
