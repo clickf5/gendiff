@@ -1,8 +1,5 @@
 import _ from 'lodash';
 
-const getUniqKeys = (obj1, obj2) => [...Object.keys(obj1), ...Object.keys(obj2)]
-  .filter((value, index, array) => array.indexOf(value) === index);
-
 const propertyActions = [
   {
     check: (beforeObject, afterObject, key) => !_.has(beforeObject, key) && _.has(afterObject, key),
@@ -41,7 +38,7 @@ const getPropertyActions = (beforeObject, afterObject, key) => propertyActions.f
 ));
 
 const getAST = (beforeObject, afterObject) => {
-  const keys = getUniqKeys(beforeObject, afterObject);
+  const keys = _.union(_.keys(beforeObject), _.keys(afterObject)).sort();
   return keys.map((key) => {
     const { state, action } = getPropertyActions(beforeObject, afterObject, key);
     return { state, key, ...action(beforeObject, afterObject, key, getAST) };
