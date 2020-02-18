@@ -1,21 +1,43 @@
 {
-    name: Eugene
-  - age: 10
-  + age: 15
-  - city: Tula
-  - haveWork: false
-  + haveWork: true
-    parents: {
-      - father: John
-      + father: Joshua
-      - mother: Helen
+  - name: Nebuchadnezzar
+  + name: Cesar
+  - IP: 10.10.10.10
+  - location: Tula
+  + location: {
+        city: Moscow
+        address: Lenina street 20
     }
-  + sex: male
-  + relatives: {
-        brother: Peter
-        somebody: {
-            name: Vasya
-            age: 100
+  - uptime: 100
+  + uptime: 500
+    cpu: Intel Xeon
+  - balancer: true
+  + balancer: {
+        name: Exodus
+        IP: 10.12.13.14
+    }
+  - administrator: {
+        name: Eugene
+        status: online
+    }
+  + administrator: John
+  - proxy: {
+        name: haproxy
+        IP: 192.168.22.22
+    }
+    services: {
+        telephony: {
+          - provider: rostelecom
+          + provider: mango
+          - enable: true
+          + enable: false
+          + max_station: 25
+        }
+      - queue: {
+            name: rabbit
+            enable: false
+            max: 2000
         }
     }
+  + IP1: 10.10.10.10
+  + IP2: 10.10.11.10
 }

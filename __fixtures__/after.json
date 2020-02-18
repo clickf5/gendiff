@@ -1,16 +1,23 @@
 {
-  "name": "Eugene",
-  "age": 15,
-  "sex": "male",
-  "haveWork": true,
-  "parents": {
-    "father": "Joshua"
+  "name": "Cesar",
+  "IP1": "10.10.10.10",
+  "IP2": "10.10.11.10",
+  "location": {
+    "city": "Moscow",
+    "address": "Lenina street 20"
   },
-  "relatives": {
-    "brother": "Peter",
-    "somebody": {
-      "name": "Vasya",
-      "age": 100
+  "uptime": 500,
+  "cpu": "Intel Xeon",
+  "balancer": {
+    "name": "Exodus",
+    "IP": "10.12.13.14"
+  },
+  "administrator": "John",
+  "services": {
+    "telephony": {
+      "provider": "mango",
+      "enable": false,
+      "max_station": 25
     }
   }
 }

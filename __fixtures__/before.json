@@ -1,10 +1,27 @@
 {
-  "name": "Eugene",
-  "age": 10,
-  "city": "Tula",
-  "haveWork": false,
-  "parents": {
-    "father": "John",
-    "mother": "Helen"
+  "name": "Nebuchadnezzar",
+  "IP": "10.10.10.10",
+  "location": "Tula",
+  "uptime": 100,
+  "cpu": "Intel Xeon",
+  "balancer": true,
+  "administrator": {
+    "name": "Eugene",
+    "status": "online"
+  },
+  "proxy": {
+    "name": "haproxy",
+    "IP": "192.168.22.22"
+  },
+  "services": {
+    "telephony": {
+      "provider": "rostelecom",
+      "enable": true
+    },
+    "queue": {
+      "name": "rabbit",
+      "enable": false,
+      "max": 2000
+    }
   }
 }
