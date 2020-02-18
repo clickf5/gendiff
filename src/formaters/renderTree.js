@@ -12,7 +12,7 @@ const propertyActions = {
   added: (indent, node, stringifyFunc) => `${indent}+ ${node.key}: ${stringifyFunc(node.value, indent)}`,
   deleted: (indent, node, stringifyFunc) => `${indent}- ${node.key}: ${stringifyFunc(node.value, indent)}`,
   nested: (indent, node, stringifyFunc, func, level) => `${indent}  ${node.key}: ${func(node.children, level + 1)}`,
-  changed: (indent, node, stringifyFunc) => [`${indent}- ${node.key}: ${stringifyFunc(node.value, indent)}`, `${indent}+ ${node.key}: ${stringifyFunc(node.newValue, indent)}`],
+  changed: (indent, node, stringifyFunc) => [`${indent}- ${node.key}: ${stringifyFunc(node.value.before, indent)}`, `${indent}+ ${node.key}: ${stringifyFunc(node.value.after, indent)}`],
   unchanged: (indent, node, stringifyFunc) => `${indent}  ${node.key}: ${stringifyFunc(node.value, indent)}`,
 };
 

@@ -27,10 +27,7 @@ const propertyActions = [
     check: (beforeObject, afterObject, key) => beforeObject[key] !== afterObject[key],
     state: 'changed',
     action: (beforeObject, afterObject, key) => (
-      {
-        value: beforeObject[key],
-        newValue: afterObject[key],
-      }),
+      { value: { before: beforeObject[key], after: afterObject[key] } }),
   },
   {
     check: (beforeObject, afterObject, key) => beforeObject[key] === afterObject[key],
