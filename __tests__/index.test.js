@@ -6,11 +6,13 @@ const extensions = ['json', 'yml', 'ini'];
 const outputs = ['tree', 'plain', 'json'];
 
 describe.each(extensions)('input files extension: .%s', (extension) => {
-  const beforeFilePath = path.resolve(`${__dirname}/../__fixtures__/before.${extension}`);
-  const afterFilePath = path.resolve(`${__dirname}/../__fixtures__/after.${extension}`);
+  const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
+  const readFile = (filename) => fs.readFileSync(getFixturePath(filename), 'utf8');
+  const beforeFilePath = getFixturePath(`before.${extension}`);
+  const afterFilePath = getFixturePath(`after.${extension}`);
 
   test.each(outputs)('output format: %s', (output) => {
-    const result = fs.readFileSync(`${__dirname}/../__fixtures__/result_${output}.txt`, 'utf8').trim();
+    const result = readFile(`result_${output}.txt`).trim();
     expect(gendiff(beforeFilePath, afterFilePath, output)).toEqual(result);
   });
 });
