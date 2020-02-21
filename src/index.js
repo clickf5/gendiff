@@ -4,7 +4,7 @@ import getParser from './parsers';
 import getRender from './formaters';
 import getAST from './buildAst';
 
-const gendiff = (beforeConfPath, afterConfPath, format) => {
+const gendiff = (beforeConfPath, afterConfPath, format = 'tree') => {
   const parser = getParser();
   const beforeConfData = fs.readFileSync(beforeConfPath, 'UTF-8');
   const afterConfData = fs.readFileSync(afterConfPath, 'UTF-8');
