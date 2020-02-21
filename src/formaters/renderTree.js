@@ -2,11 +2,16 @@ import _ from 'lodash';
 
 const indentStep = 4;
 
-const stringify = (obj, indent) => ((_.isObject(obj))
-  ? _.flatten(['{', Object.keys(obj).map((key) => {
+const stringify = (obj, indent) => {
+  if (!_.isObject(obj)) return `${obj}`;
+
+  const keys = Object.keys(obj);
+  const mapped = keys.map((key) => {
     const newIndent = `${indent}    `;
     return `${newIndent}  ${key}: ${stringify(obj[key], newIndent)}`;
-  }), `${indent}  }`]).join('\n') : `${obj}`);
+  });
+  return _.flatten(['{', mapped, `${indent}  }`]).join('\n');
+};
 
 const propertyActions = {
   added: (indent, node, stringifyFunc) => `${indent}+ ${node.key}: ${stringifyFunc(node.value, indent)}`,
