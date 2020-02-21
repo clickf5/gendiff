@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import parse from './parsers';
-import getRender from './formaters';
+import render from './formaters';
 import getAST from './buildAst';
 
 const gendiff = (beforeConfPath, afterConfPath, format = 'tree') => {
@@ -12,7 +12,6 @@ const gendiff = (beforeConfPath, afterConfPath, format = 'tree') => {
   const beforeObject = parse(beforeConfData, beforeConfType);
   const afterObject = parse(afterConfData, afterConfType);
   const ast = getAST(beforeObject, afterObject);
-  const render = getRender();
   return render(ast, format);
 };
 
