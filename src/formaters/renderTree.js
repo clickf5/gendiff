@@ -1,35 +1,36 @@
 import _ from 'lodash';
 
-const indentStep = 4;
+const space = 2;
+const tab = 4;
 
-const stringify = (obj, indent) => {
+const getSpaces = (depth) => ((depth > 1) ? ' '.repeat(space ** depth + space) : ' '.repeat(space));
+const getTabs = (depth) => ' '.repeat(tab * depth);
+
+const stringify = (obj, depth) => {
   if (!_.isObject(obj)) return `${obj}`;
-
   const keys = Object.keys(obj);
-  const mapped = keys.map((key) => {
-    const newIndent = `${indent}    `;
-    return `${newIndent}  ${key}: ${stringify(obj[key], newIndent)}`;
-  });
-  return _.flatten(['{', mapped, `${indent}  }`]).join('\n');
+  const mapped = keys.map((key) => `${getTabs(depth)}    ${key}: ${stringify(obj[key], depth + 1)}`);
+  return ['{', mapped, `${getTabs(depth)}}`].flat().join('\n');
 };
 
 const propertyActions = {
-  added: (indent, node, stringifyFunc) => `${indent}+ ${node.key}: ${stringifyFunc(node.value, indent)}`,
-  deleted: (indent, node, stringifyFunc) => `${indent}- ${node.key}: ${stringifyFunc(node.value, indent)}`,
-  nested: (indent, node, stringifyFunc, func, level) => `${indent}  ${node.key}: ${func(node.children, level + 1)}`,
-  changed: (indent, node, stringifyFunc) => [`${indent}- ${node.key}: ${stringifyFunc(node.value.before, indent)}`, `${indent}+ ${node.key}: ${stringifyFunc(node.value.after, indent)}`],
-  unchanged: (indent, node, stringifyFunc) => `${indent}  ${node.key}: ${stringifyFunc(node.value, indent)}`,
+  added: (node, stringifyFunc, depth) => `${getSpaces(depth)}+ ${node.key}: ${stringifyFunc(node.value, depth)}`,
+  deleted: (node, stringifyFunc, depth) => `${getSpaces(depth)}- ${node.key}: ${stringifyFunc(node.value, depth)}`,
+  nested: (node, stringifyFunc, depth, func) => `${getSpaces(depth)}  ${node.key}: ${['{', func(node.children, depth + 1), `${getSpaces(depth)}  }`].join('\n')}`,
+  changed: (node, stringifyFunc, depth) => [`${getSpaces(depth)}- ${node.key}: ${stringifyFunc(node.value.before, depth)}`, `${getSpaces(depth)}+ ${node.key}: ${stringifyFunc(node.value.after, depth)}`],
+  unchanged: (node, stringifyFunc, depth) => `${getSpaces(depth)}  ${node.key}: ${stringifyFunc(node.value, depth)}`,
 };
 
-const renderTree = (ast, level = 1) => {
-  const indentForQoutes = (' ').repeat(level * indentStep - indentStep);
-  const indent = (' ').repeat(level * indentStep - 2);
-  const mapped = ast.map((node) => {
-    const action = propertyActions[node.state];
-    return action(indent, node, stringify, renderTree, level);
-  });
+const renderTree = (ast) => {
+  const iter = (tree, depth) => {
+    const mapped = tree.map((node) => {
+      const action = propertyActions[node.state];
+      return action(node, stringify, depth, iter);
+    });
+    return mapped.flat().join('\n');
+  };
 
-  return _.flatten(['{', ...mapped, `${indentForQoutes}}`]).join('\n');
+  return ['{', iter(ast, 1), '}'].join('\n');
 };
 
 export default renderTree;
