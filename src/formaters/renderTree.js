@@ -12,7 +12,7 @@ const typeActions = [
     action: (val, stringifyFunc, depth) => {
       const keys = Object.keys(val);
       const mapped = keys.map((key) => `${getTabs(depth)}    ${key}: ${stringifyFunc(val[key], depth + 1)}`);
-      return ['{', ...mapped, `${getTabs(depth)}}`].join('\n');
+      return `{\n${mapped.join('\n')}\n${getTabs(depth)}}`;
     },
   },
   {
