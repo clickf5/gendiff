@@ -14,18 +14,18 @@ const stringify = (obj, depth) => {
 };
 
 const propertyActions = {
-  added: (node, stringifyFunc, depth) => `${getSpaces(depth)}+ ${node.key}: ${stringifyFunc(node.value, depth)}`,
-  deleted: (node, stringifyFunc, depth) => `${getSpaces(depth)}- ${node.key}: ${stringifyFunc(node.value, depth)}`,
-  nested: (node, stringifyFunc, depth, func) => `${getSpaces(depth)}  ${node.key}: ${['{', func(node.children, depth + 1), `${getSpaces(depth)}  }`].join('\n')}`,
-  changed: (node, stringifyFunc, depth) => [`${getSpaces(depth)}- ${node.key}: ${stringifyFunc(node.value.before, depth)}`, `${getSpaces(depth)}+ ${node.key}: ${stringifyFunc(node.value.after, depth)}`],
-  unchanged: (node, stringifyFunc, depth) => `${getSpaces(depth)}  ${node.key}: ${stringifyFunc(node.value, depth)}`,
+  added: (node, depth) => `${getSpaces(depth)}+ ${node.key}: ${stringify(node.value, depth)}`,
+  deleted: (node, depth) => `${getSpaces(depth)}- ${node.key}: ${stringify(node.value, depth)}`,
+  nested: (node, depth, func) => `${getSpaces(depth)}  ${node.key}: ${['{', func(node.children, depth + 1), `${getSpaces(depth)}  }`].join('\n')}`,
+  changed: (node, depth) => [`${getSpaces(depth)}- ${node.key}: ${stringify(node.value.before, depth)}`, `${getSpaces(depth)}+ ${node.key}: ${stringify(node.value.after, depth)}`],
+  unchanged: (node, depth) => `${getSpaces(depth)}  ${node.key}: ${stringify(node.value, depth)}`,
 };
 
 const renderTree = (ast) => {
   const iter = (tree, depth) => {
     const mapped = tree.map((node) => {
       const action = propertyActions[node.state];
-      return action(node, stringify, depth, iter);
+      return action(node, depth, iter);
     });
     return mapped.flat().join('\n');
   };
