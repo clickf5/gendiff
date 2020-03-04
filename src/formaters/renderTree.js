@@ -45,7 +45,7 @@ const renderTree = (ast) => {
     return mapped.flat().join('\n');
   };
 
-  return ['{', iter(ast, 1), '}'].join('\n');
+  return `{\n${iter(ast, 1)}\n}`;
 };
 
 export default renderTree;
