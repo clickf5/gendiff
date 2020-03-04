@@ -6,11 +6,26 @@ const tab = 4;
 const getSpaces = (depth) => ((depth > 1) ? ' '.repeat(space ** depth + space) : ' '.repeat(space));
 const getTabs = (depth) => ' '.repeat(tab * depth);
 
-const stringify = (obj, depth) => {
-  if (!_.isObject(obj)) return `${obj}`;
-  const keys = Object.keys(obj);
-  const mapped = keys.map((key) => `${getTabs(depth)}    ${key}: ${stringify(obj[key], depth + 1)}`);
-  return ['{', mapped, `${getTabs(depth)}}`].flat().join('\n');
+const typeActions = [
+  {
+    check: (val) => _.isObject(val),
+    action: (val, stringifyFunc, depth) => {
+      const keys = Object.keys(val);
+      const mapped = keys.map((key) => `${getTabs(depth)}    ${key}: ${stringifyFunc(val[key], depth + 1)}`);
+      return ['{', ...mapped, `${getTabs(depth)}}`].join('\n');
+    },
+  },
+  {
+    check: (val) => !_.isObject(val),
+    action: _.identity,
+  },
+];
+
+const getTypeAction = (val) => typeActions.find((item) => item.check(val));
+
+const stringify = (value, depth) => {
+  const { action } = getTypeAction(value);
+  return action(value, stringify, depth);
 };
 
 const propertyActions = {
