@@ -27,10 +27,10 @@ const stringify = (val) => {
 };
 
 const propertyActions = {
-  added: (node, stringifyFunc) => `Property '${node.key}' was added with value: ${stringifyFunc(node.value)}`,
+  added: (node) => `Property '${node.key}' was added with value: ${stringify(node.value)}`,
   deleted: (node) => `Property '${node.key}' was deleted`,
-  nested: (node, stringifyFunc, func) => func(node.children, [node.key]),
-  changed: (node, stringifyFunc) => `Property '${node.key}' was changed from ${stringifyFunc(node.value.before)} to ${stringifyFunc(node.value.after)}`,
+  nested: (node, func) => func(node.children, [node.key]),
+  changed: (node) => `Property '${node.key}' was changed from ${stringify(node.value.before)} to ${stringify(node.value.after)}`,
 };
 
 const renderPlain = (ast) => {
@@ -39,7 +39,7 @@ const renderPlain = (ast) => {
     const mapped = filtered.map((node) => {
       const key = [...parents, node.key].join('.');
       const action = propertyActions[node.state];
-      return action({ ...node, key }, stringify, iter);
+      return action({ ...node, key }, iter);
     });
     return mapped.join('\n');
   };
