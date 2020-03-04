@@ -7,7 +7,7 @@ const typeActions = [
   },
   {
     check: (val) => _.isBoolean(val),
-    action: (val) => `${val}`,
+    action: _.identity,
   },
   {
     check: (val) => !_.isNaN(_.toNumber(val)),
